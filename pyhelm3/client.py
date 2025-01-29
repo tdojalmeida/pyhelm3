@@ -54,6 +54,8 @@ class Client:
         insecure_skip_tls_verify: bool = False,
         kubeconfig: t.Optional[pathlib.Path] = None,
         kubecontext: t.Optional[str] = None,
+        kubeapiserver: t.Optional[str] = None,
+        kubetoken: t.Optional[str] = None,
         unpack_directory: t.Optional[str] = None
     ):
         self._command = command or Command(
@@ -63,6 +65,8 @@ class Client:
             insecure_skip_tls_verify = insecure_skip_tls_verify,
             kubeconfig = kubeconfig,
             kubecontext = kubecontext,
+            kubeapiserver = kubeapiserver,
+            kubetoken = kubetoken,
             unpack_directory = unpack_directory
         )
 
@@ -98,7 +102,7 @@ class Client:
         devel: bool = False,
         repo: t.Optional[str] = None,
         version: t.Optional[str] = None
-    ) -> contextlib.AbstractAsyncContextManager[pathlib.Path]:
+    ) -> t.AsyncIterator[pathlib.Path]:
         """
         Context manager that pulls the specified chart and yields a chart object
         whose ref is the unpacked chart directory.
